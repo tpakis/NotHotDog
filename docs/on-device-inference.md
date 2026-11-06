@@ -2,7 +2,15 @@
 
 The app uses the [ML Kit GenAI Prompt API](https://developers.google.com/ml-kit/genai/prompt/android) (`com.google.mlkit:genai-prompt`), which calls Gemini Nano through AICore, an Android system service. The app doesn't ship a model. AICore owns the download and the updates, and all apps on the device share the same copy.
 
-All of this code is in `app/src/main/java/ai/thanasakis/nothotdog/classifier/HotdogClassifier.kt`.
+The Android Dev Summit talk [Inside Gemini Nano and Gemma 4](https://developer.android.com/events/dev-summit/talks/inside-gemini-nano-and-gemma-4-powering-on-device-intelligence) ([video](https://www.youtube.com/watch?v=ekS4_gV6Ojc)) gives useful background. It describes AICore with the ML Kit APIs as the "most hands-off path", with LiteRT as the alternative for bundling a model and taking full control. It also says Gemini Nano 4 is Gemma built and run through AICore.
+
+The code is in `app/src/main/java/ai/thanasakis/nothotdog/classifier/`.
+
+## Why this approach
+
+Google's [guide to choosing an AI solution](https://developer.android.com/ai/overview) says to start with the ML Kit GenAI APIs for on-device work with text, images or audio, and calls them an ideal path to production. LiteRT with a custom model, such as Gemma, is its suggestion for highly specialized needs.
+
+The same guide says traditional ML often suits classification better, with greater efficiency and lower cost. That applies here, since "is this a hotdog?" is a classification task. ML Kit's [image labeling](https://developers.google.com/ml-kit/vision/image-labeling/label-map) model even has a "Hot dog" label, needs no training, and doesn't depend on AICore. It hasn't been tried in this app, so how it compares isn't known. The app uses Gemini Nano because showing it on the device is the point of this demo.
 
 ## Detecting a capable device
 
@@ -71,7 +79,7 @@ This is what a Pixel 10 enrolled in the AICore Developer Preview reported:
 | Preview, Full | `nano-v4-full` |
 | Preview, Fast | `nano-v4-fast` |
 
-All three installed models reported a limit of 32768 tokens. Other devices will differ, and a device outside the [Developer Preview](https://developers.google.com/ml-kit/genai/aicore-dev-preview) won't get preview models.
+All three installed models reported a limit of 32768 tokens. The talk mentions up to 128K tokens of context for Gemma 4, but also that ML Kit caps the context length, so check `getTokenLimit()` rather than relying on the model's headline figure. Other devices will differ, and a device outside the [Developer Preview](https://developers.google.com/ml-kit/genai/aicore-dev-preview) won't get preview models.
 
 - Switching models has been tested, but classifying photos has only been tested on `nano-v3`. The accuracy and speed of the preview models are unknown.
 - Selecting a model that isn't installed starts its download, which is large. AICore's guide says these downloads need Wi-Fi.

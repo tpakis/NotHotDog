@@ -13,9 +13,19 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow" alt="MIT License"></a>
 </p>
 
-An Android demo of the "Not Hotdog" app from the TV show *Silicon Valley*. Take or choose a photo and it tells you whether it's a hotdog, using Gemini Nano on the device.
+An Android demo of the "Not Hotdog" app from the TV show *Silicon Valley* ([watch the scene on YouTube](https://www.youtube.com/watch?v=tWwCK95X6go)). Take or choose a photo and it tells you whether it's a hotdog. **The model runs entirely on the phone**, so no photo goes to a server for classification.
 
 It's an unofficial fan project with no connection to the show or its owners.
+
+## On-device inference
+
+The app asks Gemini Nano through the [ML Kit GenAI Prompt API](https://developers.google.com/ml-kit/genai/prompt/android), which runs on [AICore](https://developer.android.com/ai/gemini-nano), an Android system service. This is the route that the Android Dev Summit talk *Inside Gemini Nano and Gemma 4* ([talk page](https://developer.android.com/events/dev-summit/talks/inside-gemini-nano-and-gemma-4-powering-on-device-intelligence), [video](https://www.youtube.com/watch?v=ekS4_gV6Ojc)) calls the "most hands-off path", and Google's [guide to choosing an AI solution](https://developer.android.com/ai/overview) says to start with these APIs when working with text, images or audio on the device.
+
+- **No model in the APK.** AICore downloads and updates the model, and every app on the device shares the same copy.
+- **Compatible devices only.** The app asks the device what it supports, downloads the model if needed, and otherwise explains that it isn't available. See Google's [device list](https://developers.google.com/ml-kit/genai#prompt-device).
+- **Selectable models.** Settings lists the models each device offers. On a Pixel 10, that's the stable `nano-v3` by default, plus the preview `nano-v4` models for devices in the [AICore Developer Preview](https://developers.google.com/ml-kit/genai/aicore-dev-preview). According to the talk, Gemini Nano 4 is built from Gemma 4.
+
+Read more in [On-device inference](docs/on-device-inference.md).
 
 ## Demo
 
