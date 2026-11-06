@@ -53,6 +53,7 @@ fun HomeScreen(
     onTakePhoto: () -> Unit,
     onChoosePhoto: () -> Unit,
     onCheckAgain: () -> Unit,
+    onOpenSettings: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val ready = model == ModelState.Ready
@@ -77,11 +78,13 @@ fun HomeScreen(
                 ModelStatus(model, message, onCheckAgain)
             }
         }
-        IconButton(
-            onClick = { showShareDialog = true },
-            modifier = Modifier.align(Alignment.TopEnd).padding(8.dp),
-        ) {
-            Icon(painterResource(R.drawable.ic_share), stringResource(R.string.share), tint = Color.White)
+        Row(Modifier.align(Alignment.TopEnd).padding(8.dp)) {
+            IconButton(onClick = onOpenSettings) {
+                Icon(painterResource(R.drawable.ic_settings), stringResource(R.string.settings), tint = Color.White)
+            }
+            IconButton(onClick = { showShareDialog = true }) {
+                Icon(painterResource(R.drawable.ic_share), stringResource(R.string.share), tint = Color.White)
+            }
         }
     }
     if (showShareDialog) {

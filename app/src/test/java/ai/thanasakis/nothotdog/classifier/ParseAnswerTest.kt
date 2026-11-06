@@ -16,6 +16,16 @@ class ParseAnswerTest {
 
     @Test
     fun anythingElseIsNotAnAnswer() {
-        listOf(null, "", "maybe", "Not sure", "nope", "yesterday").forEach { assertEquals(it, null, parseAnswer(it)) }
+        listOf(null, "", "   ", "maybe", "Not sure", "nope", "yesterday", "nothing", "**").forEach {
+            assertEquals(it, null, parseAnswer(it))
+        }
+    }
+
+    @Test
+    fun onlyTheFirstWordCounts() {
+        assertEquals(true, parseAnswer("Yes, it is a hot dog"))
+        assertEquals(false, parseAnswer("No, that is a pizza"))
+        assertEquals(false, parseAnswer("NO yes"))
+        assertEquals(null, parseAnswer("The answer is yes"))
     }
 }

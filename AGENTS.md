@@ -12,9 +12,13 @@ This file provides guidance to AI coding agents when working with code in this r
 ./gradlew connectedAndroidTest   # instrumented tests; needs a device/emulator (app/src/androidTest)
 
 # single test (unit, then instrumented)
-./gradlew :app:testDebugUnitTest --tests "ai.thanasakis.nothotdog.ExampleUnitTest.addition_isCorrect"
-./gradlew :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=ai.thanasakis.nothotdog.ExampleInstrumentedTest
+./gradlew :app:testDebugUnitTest --tests "ai.thanasakis.nothotdog.classifier.ParseAnswerTest"
+./gradlew :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=ai.thanasakis.nothotdog.ui.HomeScreenTest
 ```
+
+## Documentation
+
+Read [`docs/README.md`](docs/README.md) first. It links to pages on how the app works, its architecture, on-device inference, the UI specification and the development guide, which includes notes for agents. Update those docs when you change what they describe.
 
 ## Project state
 

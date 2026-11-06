@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="18 18 72 72" width="256" height="256" role="img" aria-label="Not Hotdog app icon">
+  <circle cx="54" cy="54" r="36" fill="#35C422"/>
+  <g transform="translate(54 54) rotate(-30) scale(0.85) translate(-54 -54)" stroke="#1A1A1A" stroke-width="2">
+    <path fill="#E8A951" d="M36,35H72A11,11 0 0 1 83,46V52H25V46A11,11 0 0 1 36,35Z"/>
+    <path fill="#D1352F" d="M30,44H78A9,9 0 0 1 78,62H30A9,9 0 0 1 30,44Z"/>
+    <path fill="none" stroke="#FFD400" stroke-width="3" stroke-linecap="round" d="M30,51q4,-6 8,0t8,0t8,0t8,0t8,0t8,0"/>
+    <path fill="#F4C26B" d="M28,57H80A3,3 0 0 1 83,60V63A11,11 0 0 1 72,74H36A11,11 0 0 1 25,63V60A3,3 0 0 1 28,57Z"/>
+  </g>
+</svg>

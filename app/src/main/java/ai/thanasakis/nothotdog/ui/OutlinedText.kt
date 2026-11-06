@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
@@ -27,6 +28,8 @@ fun OutlinedText(text: String, fontSize: TextUnit, modifier: Modifier = Modifier
             softWrap = false,
             overflow = TextOverflow.Visible,
             color = Color.Black,
+            // Only the fill below is exposed, so that accessibility services read the text once.
+            modifier = Modifier.clearAndSetSemantics {},
             style = style.copy(
                 drawStyle = Stroke(width = fontSizePx * 0.13f, join = StrokeJoin.Round),
                 shadow = Shadow(Color.Black, Offset(0f, fontSizePx * 0.03f), blurRadius = fontSizePx * 0.05f),

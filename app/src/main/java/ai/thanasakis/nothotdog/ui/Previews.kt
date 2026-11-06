@@ -1,5 +1,8 @@
 package ai.thanasakis.nothotdog.ui
 
+import ai.thanasakis.nothotdog.classifier.ModelAvailability
+import ai.thanasakis.nothotdog.classifier.ModelChoice
+import ai.thanasakis.nothotdog.classifier.ModelChoiceInfo
 import ai.thanasakis.nothotdog.classifier.ModelState
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -25,13 +28,13 @@ private fun samplePhoto(): ImageBitmap {
 @Preview(widthDp = 390, heightDp = 844)
 @Composable
 private fun HomeReadyPreview() {
-    HomeScreen(ModelState.Ready, null, {}, {}, {})
+    HomeScreen(ModelState.Ready, null, {}, {}, {}, {})
 }
 
 @Preview(widthDp = 390, heightDp = 844)
 @Composable
 private fun HomeUnavailablePreview() {
-    HomeScreen(ModelState.Unavailable, null, {}, {}, {})
+    HomeScreen(ModelState.Unavailable, null, {}, {}, {}, {})
 }
 
 @Preview(widthDp = 390, heightDp = 844)
@@ -56,4 +59,17 @@ private fun NotHotdogPreview() {
 @Composable
 private fun ShareDialogPreview() {
     ShareDialogContent(onDismiss = {})
+}
+
+@Preview(widthDp = 390, heightDp = 844)
+@Composable
+private fun SettingsDialogPreview() {
+    val choices = ModelChoice.ALL.mapIndexed { index, choice ->
+        when (index) {
+            0 -> ModelChoiceInfo(choice, ModelAvailability.INSTALLED, "nano-v3", 32768)
+            1 -> ModelChoiceInfo(choice, ModelAvailability.DOWNLOADABLE)
+            else -> ModelChoiceInfo(choice, ModelAvailability.UNAVAILABLE)
+        }
+    }
+    SettingsDialogContent(choices, ModelChoice.ALL.first(), 3, {}, {}, {})
 }

@@ -11,6 +11,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -24,6 +25,7 @@ import java.io.File
 fun NotHotDogApp(viewModel: NotHotDogViewModel = viewModel()) {
     val context = LocalContext.current
     var pendingCapture by rememberSaveable { mutableStateOf<Uri?>(null) }
+    var showSettings by rememberSaveable { mutableStateOf(false) }
 
     val camera = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { saved ->
         pendingCapture?.takeIf { saved }?.let(viewModel::evaluate)
@@ -53,9 +55,23 @@ fun NotHotDogApp(viewModel: NotHotDogViewModel = viewModel()) {
                 photoPicker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             },
             onCheckAgain = viewModel::checkModel,
+            onOpenSettings = { showSettings = true },
         )
         is Screen.Evaluating -> EvaluatingScreen(screen.photo)
         is Screen.Result -> ResultScreen(screen.photo, screen.isHotdog, onDismiss = viewModel::backToHome)
+    }
+
+    if (showSettings) {
+        // Runs on every open, and also after the dialog is restored without a ViewModel following process death.
+        LaunchedEffect(Unit) { viewModel.refreshModelChoices() }
+        SettingsDialog(
+            choices = state.modelChoices,
+            selected = state.selectedModel,
+            maxOutputTokens = state.maxOutputTokens,
+            onSelectModel = viewModel::selectModel,
+            onSelectMaxOutputTokens = viewModel::selectMaxOutputTokens,
+            onDismiss = { showSettings = false },
+        )
     }
 }
 

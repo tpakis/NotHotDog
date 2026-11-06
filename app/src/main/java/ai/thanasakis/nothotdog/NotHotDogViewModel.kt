@@ -1,7 +1,10 @@
 package ai.thanasakis.nothotdog
 
 import ai.thanasakis.nothotdog.classifier.HotdogClassifier
+import ai.thanasakis.nothotdog.classifier.ModelChoice
+import ai.thanasakis.nothotdog.classifier.ModelChoiceInfo
 import ai.thanasakis.nothotdog.classifier.ModelState
+import ai.thanasakis.nothotdog.classifier.probeModelChoices
 import android.app.Application
 import android.net.Uri
 import android.util.Log
@@ -29,13 +32,20 @@ data class UiState(
     val model: ModelState = ModelState.Checking,
     val screen: Screen = Screen.Home,
     @StringRes val message: Int? = null,
+    val selectedModel: ModelChoice = ModelChoice.DEFAULT,
+    val modelChoices: List<ModelChoiceInfo>? = null,
+    val maxOutputTokens: Int = DEFAULT_MAX_OUTPUT_TOKENS,
 )
 
 class NotHotDogViewModel(application: Application) : AndroidViewModel(application) {
-    private val classifier = HotdogClassifier()
+    private val settings = SettingsStore(application)
+    private var classifier = HotdogClassifier(settings.modelChoice)
+    private var modelCheck: Job? = null
     private var evaluation: Job? = null
 
-    var uiState by mutableStateOf(UiState())
+    var uiState by mutableStateOf(
+        UiState(selectedModel = settings.modelChoice, maxOutputTokens = settings.maxOutputTokens),
+    )
         private set
 
     init {
@@ -43,9 +53,40 @@ class NotHotDogViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     fun checkModel() {
-        viewModelScope.launch {
-            classifier.prepare().collect { uiState = uiState.copy(model = it) }
+        modelCheck?.cancel()
+        modelCheck = viewModelScope.launch {
+            classifier.prepare().collect { state ->
+                uiState = uiState.copy(model = state)
+                // A saved model can stop being offered, for example after leaving the developer preview.
+                if (state == ModelState.Unavailable && uiState.selectedModel != ModelChoice.DEFAULT) {
+                    selectModel(ModelChoice.DEFAULT)
+                    uiState = uiState.copy(message = R.string.model_fallback)
+                }
+            }
         }
+    }
+
+    fun refreshModelChoices() {
+        uiState = uiState.copy(modelChoices = null)
+        viewModelScope.launch {
+            uiState = uiState.copy(modelChoices = probeModelChoices())
+        }
+    }
+
+    fun selectModel(choice: ModelChoice) {
+        if (choice == uiState.selectedModel) return
+        evaluation?.cancel()
+        modelCheck?.cancel()
+        classifier.close()
+        classifier = HotdogClassifier(choice)
+        settings.modelChoice = choice
+        uiState = uiState.copy(selectedModel = choice, message = null)
+        checkModel()
+    }
+
+    fun selectMaxOutputTokens(tokens: Int) {
+        settings.maxOutputTokens = tokens
+        uiState = uiState.copy(maxOutputTokens = tokens)
     }
 
     fun evaluate(uri: Uri) {
@@ -57,7 +98,7 @@ class NotHotDogViewModel(application: Application) : AndroidViewModel(applicatio
                 }
                 val image = photo.asImageBitmap()
                 uiState = uiState.copy(screen = Screen.Evaluating(image), message = null)
-                val isHotdog = classifier.isHotdog(photo)
+                val isHotdog = classifier.isHotdog(photo, uiState.maxOutputTokens)
                 uiState = uiState.copy(screen = Screen.Result(image, isHotdog))
             } catch (e: CancellationException) {
                 throw e

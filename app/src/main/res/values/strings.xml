@@ -17,4 +17,18 @@
     <string name="share_url" translatable="false">https://github.com/tpakis/NotHotDog</string>
     <string name="share_qr_description">QR code linking to the project on GitHub</string>
     <string name="close">Close</string>
+    <string name="settings">Settings</string>
+    <string name="settings_model">Model</string>
+    <string name="settings_checking_models">Checking models…</string>
+    <string name="settings_max_output_tokens">Max answer length (tokens)</string>
+    <string name="settings_max_output_tokens_hint">The app only needs one word. Try more if a model starts its answer with other text. The model\'s total limit is set by AICore and can\'t be changed here.</string>
+    <string name="model_stable_full">Stable, full</string>
+    <string name="model_stable_fast">Stable, fast</string>
+    <string name="model_preview_full">Preview, full</string>
+    <string name="model_preview_fast">Preview, fast</string>
+    <string name="model_installed">%1$s, installed, %2$d token limit</string>
+    <string name="model_downloadable">Not installed. Select to download</string>
+    <string name="model_status_downloading">Downloading</string>
+    <string name="model_status_unavailable">Not available on this device</string>
+    <string name="model_fallback">The selected model isn\'t available, so the app went back to the default.</string>
 </resources>

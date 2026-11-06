@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.core.graphics.scale
 import com.google.mlkit.genai.common.DownloadStatus
 import com.google.mlkit.genai.common.FeatureStatus
-import com.google.mlkit.genai.prompt.Generation
 import com.google.mlkit.genai.prompt.ImagePart
 import com.google.mlkit.genai.prompt.TextPart
 import com.google.mlkit.genai.prompt.generateContentRequest
@@ -32,8 +31,8 @@ sealed interface ModelState {
 }
 
 /** Answers "is it a hotdog?" with Gemini Nano, which runs on the device through AICore. */
-class HotdogClassifier : Closeable {
-    private val model = Generation.getClient()
+class HotdogClassifier(choice: ModelChoice = ModelChoice.DEFAULT) : Closeable {
+    private val model = choice.createClient()
 
     /** Reports whether this device can run the model, downloading the model if it needs to. */
     fun prepare(): Flow<ModelState> = flow {
@@ -67,11 +66,11 @@ class HotdogClassifier : Closeable {
         emit(ModelState.Unavailable)
     }
 
-    suspend fun isHotdog(photo: Bitmap): Boolean {
+    suspend fun isHotdog(photo: Bitmap, maxOutputTokens: Int): Boolean {
         val request = generateContentRequest(ImagePart(photo.fitInto(MAX_INFERENCE_SIDE)), TextPart(PROMPT)) {
             temperature = 0f
             topK = 1
-            maxOutputTokens = 3
+            this.maxOutputTokens = maxOutputTokens
         }
         val answer = model.generateContent(request).candidates.firstOrNull()?.text
         return parseAnswer(answer) ?: throw IOException("Unexpected model answer: $answer")
