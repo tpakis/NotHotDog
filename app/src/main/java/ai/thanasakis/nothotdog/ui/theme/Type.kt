@@ -1,8 +1,12 @@
 package ai.thanasakis.nothotdog.ui.theme
 
+import ai.thanasakis.nothotdog.R
 import androidx.compose.material3.Typography
+import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
@@ -31,4 +35,12 @@ val Typography = Typography(
         letterSpacing = 0.5.sp
     )
     */
+)
+@OptIn(ExperimentalTextApi::class)
+val NunitoBlack = FontFamily(
+    Font(
+        R.font.nunito_variable,
+        FontWeight.Black,
+        variationSettings = FontVariation.Settings(FontVariation.weight(900)),
+    ),
 )

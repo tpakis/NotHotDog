@@ -1,3 +1,20 @@
 <resources>
-    <string name="app_name">NotHotDog</string>
+    <string name="app_name">Not Hotdog</string>
+    <string name="take_photo">Take photo</string>
+    <string name="choose_photo">Choose photo</string>
+    <string name="evaluating">Evaluating...</string>
+    <string name="hotdog">Hotdog</string>
+    <string name="not_hotdog">Not hotdog</string>
+    <string name="start_over">Start over</string>
+    <string name="model_checking">Checking on-device AI…</string>
+    <string name="model_downloading">Downloading on-device AI model…</string>
+    <string name="model_downloading_percent">Downloading on-device AI model… %1$d%%</string>
+    <string name="model_unavailable">Gemini Nano isn\'t available on this device.</string>
+    <string name="check_again">Check again</string>
+    <string name="evaluation_failed">Couldn\'t evaluate that photo. Try again.</string>
+    <string name="no_camera_app">No camera app found on this device.</string>
+    <string name="share">Share</string>
+    <string name="share_url" translatable="false">https://github.com/tpakis/NotHotDog</string>
+    <string name="share_qr_description">QR code linking to the project on GitHub</string>
+    <string name="close">Close</string>
 </resources>
