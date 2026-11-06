@@ -17,13 +17,33 @@ An Android demo of the "Not Hotdog" app from the TV show *Silicon Valley*. Take 
 
 It's an unofficial fan project with no connection to the show or its owners.
 
+## Demo
+
+<p align="center">
+  <img src="docs/assets/demo.gif" alt="The app evaluating a photo of a hotdog and answering Hotdog, then a photo of a pizza and answering Not hotdog" width="270">
+</p>
+
+Recorded on a Pixel 10 with real on-device results. The GIF skips the step of choosing a photo.
+
+## Screenshots
+
+| Home | Evaluating | Hotdog |
+|---|---|---|
+| <img src="docs/assets/screenshots/home.png" alt="Home screen with Take photo and Choose photo buttons" width="240"> | <img src="docs/assets/screenshots/evaluating.png" alt="A washed-out photo with a ring of dots and the text Evaluating" width="240"> | <img src="docs/assets/screenshots/hotdog.png" alt="A hot dog with a green Hotdog banner and check mark" width="240"> |
+
+| Not hotdog | Settings | Share |
+|---|---|---|
+| <img src="docs/assets/screenshots/not-hotdog.png" alt="A pizza with a red Not hotdog banner and X" width="240"> | <img src="docs/assets/screenshots/settings.png" alt="Settings dialog with model choices and answer length" width="240"> | <img src="docs/assets/screenshots/share.png" alt="Share dialog with a QR code and link to this repository" width="240"> |
+
+Sample photos: [hot dog](https://commons.wikimedia.org/wiki/File:Hot_dog_with_mustard.png) by Renee Comet, National Cancer Institute (public domain), and [pizza](https://commons.wikimedia.org/wiki/File:Pizza-3007395.jpg) by igorovsyannykov (CC0).
+
 ## Getting started
 
 ```sh
 ./gradlew installDebug
 ```
 
-Classification needs a device with Gemini Nano, such as a Pixel 9 or 10.
+Classification needs a device with Gemini Nano, such as a Pixel 9 or 10. Signed APKs are on the [releases page](https://github.com/tpakis/NotHotDog/releases).
 
 ## Documentation
 

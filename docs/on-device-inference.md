@@ -97,7 +97,7 @@ On an emulator, `generateContent` fails with `[ErrorCode -101] AICore is either 
 
 ## Limits to design around
 
-- **Speed.** Expect several seconds per photo on a Pixel 10. The first request after launch is the slowest because the model has to load. `GenerativeModel.warmup()` exists to reduce this, but the app doesn't call it.
+- **Speed.** On a Pixel 10 with `nano-v3`, the Evaluating screen was visible for about 1.3 to 2 seconds in two runs. Those runs took much longer overall, between 9 and 55 seconds from tapping a photo, because of what happens before that screen appears, such as the picker closing and the photo loading. That part wasn't broken down. Google warns that a preview model's first request can take about a minute while it loads. `GenerativeModel.warmup()` exists to reduce first-request time, but the app doesn't call it.
 - **Beta API.** The library is at `1.0.0-beta5`, so expect changes between versions.
 - **Kotlin version.** This library version depends on Kotlin 2.4, which is why the root `build.gradle.kts` upgrades the Kotlin Gradle plugin that AGP 9 bundles.
 

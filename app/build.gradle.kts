@@ -13,14 +13,28 @@ android {
         applicationId = "ai.thanasakis.nothotdog"
         minSdk = 26
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        // The release workflow sets these from the run number and the tag.
+        versionCode = providers.environmentVariable("VERSION_CODE").orNull?.toInt() ?: 1
+        versionName = providers.environmentVariable("VERSION_NAME").orNull ?: "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    val keystorePath = providers.environmentVariable("RELEASE_KEYSTORE_PATH").orNull
+    val releaseSigning = keystorePath?.let { path ->
+        signingConfigs.create("release") {
+            storeFile = file(path)
+            storePassword = providers.environmentVariable("RELEASE_KEYSTORE_PASSWORD").get()
+            keyAlias = providers.environmentVariable("RELEASE_KEY_ALIAS").get()
+            // PKCS12 keystores, which keytool creates by default, use one password for both.
+            keyPassword = storePassword
+        }
+    }
+
     buildTypes {
         release {
+            // Without a keystore, local release builds are simply unsigned.
+            signingConfig = releaseSigning
             optimization {
                 enable = false
             }

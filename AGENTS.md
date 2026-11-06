@@ -18,7 +18,7 @@ This file provides guidance to AI coding agents when working with code in this r
 
 ## Documentation
 
-Read [`docs/README.md`](docs/README.md) first. It links to pages on how the app works, its architecture, on-device inference, the UI specification and the development guide, which includes notes for agents. Update those docs when you change what they describe.
+Read [`docs/README.md`](docs/README.md) first. It links to pages on how the app works, its architecture, on-device inference, the UI specification, releasing and the development guide, which includes notes for agents. Update those docs when you change what they describe.
 
 ## Project state
 
@@ -31,4 +31,5 @@ Single-module (`:app`) Compose demo of the "Not Hotdog" app from Silicon Valley.
 - **SDK levels:** `compileSdk` 37, `targetSdk` 36, `minSdk` 26 (required by ML Kit GenAI).
 - **JVM:** the Gradle daemon runs on a JDK 21 toolchain (`gradle/gradle-daemon-jvm.properties`), while app sources compile to Java 11 compatibility.
 - **R8:** disabled for release (`optimization { enable = false }` in `app/build.gradle.kts`). Keep rules go in `app/src/main/keepRules/`, not `proguard-rules.pro`.
+- **Release signing:** comes from environment variables set by `.github/workflows/release.yml`. Never commit a keystore or password; see `docs/releasing.md`.
 - **Configuration cache:** enabled in `gradle.properties`, so custom Gradle tasks and build logic must be compatible with it.

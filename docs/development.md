@@ -101,6 +101,7 @@ Add a preview and a UI test for any new screen.
 - **Installed skills.** The Android CLI has relevant ones: `ml-kit-genai-prompt-api`, `camerax` and `android-cli`.
 - **Check API names against the current version.** This is a beta API that changes quickly, and samples can lag behind. Use the reference docs and let the compiler confirm. Google's terms forbid reverse engineering these services, so don't decompile them.
 - **Inspect with screenshots when the spinner is on screen.** Tools that wait for an idle UI may not cope with its endless animation, and `uiautomator dump` was also seen failing with a null root node on an emulator. `adb exec-out screencap -p` works anywhere.
-- **Respect the test phone.** It's probably someone's personal device. Don't unlock it, don't screenshot the launcher or photo picker where personal content could be captured, and remove any test photos you push.
+- **Respect the test phone.** It's probably someone's personal device. Don't unlock it, and remove any test photos you push, including after a failed run. A deleted file can stay in the picker until it's rescanned.
+- **Never capture the photo picker.** It shows the owner's library and can take many seconds to close after a photo is tapped, so a fixed delay isn't enough. Before saving or viewing a frame, check by code that it matches the expected screen, and discard everything else unviewed. The same applies to recordings. Don't assume the newest item in the picker is the file you pushed, either.
 - **Report what you verified.** Say whether a claim comes from a real device, an emulator or a preview. In particular, an emulator can't confirm anything about classification.
 - **Don't add `org.jetbrains.kotlin.android`.** AGP 9 compiles Kotlin itself.
